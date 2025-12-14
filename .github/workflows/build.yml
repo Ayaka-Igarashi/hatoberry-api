@@ -37,12 +37,6 @@ jobs:
           oauth-secret: ${{ secrets.TS_OAUTH_CLIENT_SECRET }}
           tags: ${{ secrets.TS_TAILSCALE_TAG }}
 
-      - name: Check Tailscale
-        run: tailscale status
-      - name: Debug Tailscale IP
-        run: |
-          echo "Hatoberry IP: '${{ secrets.HATOBERRY_TAILSCALE_IP }}'"
-
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
@@ -54,7 +48,7 @@ jobs:
         run: |
           rsync -av \
             build/libs/*.jar \
-            bot-user1@${{ secrets.HATOBERRY_TAILSCALE_IP }}:/var/www/hatoberry-api/app.jar
+            bot-user1@${{ vars.HATOBERRY_TAILSCALE_IP }}:/var/www/hatoberry-api/app.jar
 
       - name: Restart service
         run: |
