@@ -41,6 +41,9 @@ jobs:
         run: tailscale status
       - name: Debug
         run: tailscale status | grep ci
+      - name: Debug Tailscale IP
+        run: |
+          echo "Hatoberry IP: '${{ secrets.HATOBERRY_TAILSCALE_IP }}'"
 
       - name: Setup SSH
         run: |
