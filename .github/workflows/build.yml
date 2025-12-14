@@ -22,8 +22,10 @@ jobs:
       - name: Set up Maven
         run: sudo apt-get update && sudo apt-get install -y maven
 
+      - name: Debug ls
+        run: ls -la
+
       - name: Build
-        working-directory: hatoberry-api
         run: mvn clean package -DskipTests
 
       - name: Connect Tailscale
