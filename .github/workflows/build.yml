@@ -23,7 +23,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build
-        run: ./gradlew build -x test
+        run: ./gradlew clean build -x test
 
       - name: Connect Tailscale
         uses: tailscale/github-action@v2
@@ -40,8 +40,8 @@ jobs:
       - name: Upload JAR
         run: |
           rsync -av \
-            target/*.jar \
-            ${{ vars.SSH_USER }}@${{ vars.HATOBERRY_TAILSCALE_IP }}:${{ vars.DEPLOY_DIR }}/app.jar
+            build/libs/*.jar \
+            bot-user1@${{ secrets.HATOBERRY_TAILSCALE_IP }}:/var/www/hatoberry-api/app.jar
 
       - name: Restart service
         run: |
