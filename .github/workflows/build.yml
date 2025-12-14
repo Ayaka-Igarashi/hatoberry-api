@@ -37,6 +37,11 @@ jobs:
           oauth-secret: ${{ secrets.TS_OAUTH_CLIENT_SECRET }}
           tags: ${{ secrets.TS_TAILSCALE_TAG }}
 
+      - name: Check Tailscale
+        run: tailscale status
+      - name: Debug
+        run: tailscale status | grep ci
+
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
