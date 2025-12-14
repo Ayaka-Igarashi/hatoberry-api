@@ -46,8 +46,7 @@ jobs:
 
       - name: Upload JAR
         run: |
-          rsync -av \
-            build/libs/*.jar \
+          rsync -av build/libs/hatoberry-api-0.0.1-SNAPSHOT.jar \
             bot-user1@${{ vars.HATOBERRY_TAILSCALE_IP }}:/var/www/hatoberry-api/app.jar
 
       - name: Restart service
