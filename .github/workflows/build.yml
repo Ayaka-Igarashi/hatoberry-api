@@ -20,7 +20,7 @@ jobs:
           java-version: 21
 
       - name: Build
-        run: ./mvnw clean package -DskipTests
+        run: ./mvn clean package -DskipTests
 
       - name: Connect Tailscale
         uses: tailscale/github-action@v2
