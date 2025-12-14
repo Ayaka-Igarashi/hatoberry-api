@@ -19,14 +19,11 @@ jobs:
           distribution: temurin
           java-version: 21
 
-      - name: Set up Maven
-        run: sudo apt-get update && sudo apt-get install -y maven
-
-      - name: Debug ls
-        run: ls -la
+      - name: Grant execute permission
+        run: chmod +x gradlew
 
       - name: Build
-        run: mvn clean package -DskipTests
+        run: ./gradlew build -x test
 
       - name: Connect Tailscale
         uses: tailscale/github-action@v2
