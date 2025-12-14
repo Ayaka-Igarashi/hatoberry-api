@@ -19,6 +19,9 @@ jobs:
           distribution: temurin
           java-version: 21
 
+      - name: Set up Maven
+        run: sudo apt-get update && sudo apt-get install -y maven
+
       - name: Build
         run: ./mvn clean package -DskipTests
 
