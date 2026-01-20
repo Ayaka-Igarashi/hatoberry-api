@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
 
 @RestController
 public class DateController {
-    @GetMapping("/date")
+    @GetMapping({"/date", "/date/"})
     public String getDate() {
         LocalDateTime nowDate = LocalDateTime.now();
         DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss.SSS");
