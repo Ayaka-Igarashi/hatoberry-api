@@ -26,6 +26,10 @@ public class Message {
         this.postedAt = Instant.now();
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public String getContent() {
         return content;
     }

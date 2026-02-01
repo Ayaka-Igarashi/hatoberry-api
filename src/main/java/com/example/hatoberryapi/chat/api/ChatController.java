@@ -1,10 +1,11 @@
 package com.example.hatoberryapi.chat.api;
 
+import com.example.hatoberryapi.chat.dto.MessageRequest;
+import com.example.hatoberryapi.chat.dto.MessageResponse;
 import com.example.hatoberryapi.chat.service.ChatService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/chat")
@@ -16,9 +17,12 @@ public class ChatController {
     }
 
     @PostMapping("/messages")
-    public void postMessage(@RequestBody PostMessageRequest request) {
+    public void postMessage(@RequestBody MessageRequest request) {
         this.chatService.postMessage(request.content());
     }
-}
 
-record PostMessageRequest(String content) {}
+    @GetMapping("/messages")
+    public List<MessageResponse> getMessages() {
+        return this.chatService.getMessages();
+    }
+}

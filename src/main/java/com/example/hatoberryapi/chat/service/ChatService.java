@@ -2,7 +2,10 @@ package com.example.hatoberryapi.chat.service;
 
 import com.example.hatoberryapi.chat.domain.message.Message;
 import com.example.hatoberryapi.chat.domain.message.MessageRepository;
+import com.example.hatoberryapi.chat.dto.MessageResponse;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ChatService {
@@ -15,5 +18,15 @@ public class ChatService {
     public void postMessage(String content) {
         Message message = new Message(content);
         messageRepository.save(message);
+    }
+
+    public List<MessageResponse> getMessages() {
+        return messageRepository.findAll().stream()
+                .map(message -> new MessageResponse(
+                        message.getId(),
+                        message.getContent(),
+                        message.getPostedAt()
+                ))
+                .toList();
     }
 }
