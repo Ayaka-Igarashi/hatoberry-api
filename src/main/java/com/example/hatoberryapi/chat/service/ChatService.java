@@ -3,6 +3,8 @@ package com.example.hatoberryapi.chat.service;
 import com.example.hatoberryapi.chat.domain.message.Message;
 import com.example.hatoberryapi.chat.domain.message.MessageRepository;
 import com.example.hatoberryapi.chat.dto.MessageResponse;
+import com.example.hatoberryapi.chat.websocket.ChatWebSocketHandler;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,14 +12,23 @@ import java.util.List;
 @Service
 public class ChatService {
     private final MessageRepository messageRepository;
+    private final ChatWebSocketHandler webSocketHandler;
+    private final ObjectMapper objectMapper;
 
-    public ChatService(MessageRepository messageRepository) {
+    public ChatService(MessageRepository messageRepository, 
+                       ChatWebSocketHandler webSocketHandler,
+                       ObjectMapper objectMapper) {
         this.messageRepository = messageRepository;
+        this.webSocketHandler = webSocketHandler;
+        this.objectMapper = objectMapper;
     }
 
     public void postMessage(String content) {
         Message message = new Message(content);
-        messageRepository.save(message);
+        Message savedMessage = messageRepository.save(message);
+        
+        // WebSocketで全クライアントに通知
+        notifyNewMessage(savedMessage);
     }
 
     public List<MessageResponse> getMessages() {
@@ -28,5 +39,19 @@ public class ChatService {
                         message.getPostedAt()
                 ))
                 .toList();
+    }
+
+    private void notifyNewMessage(Message message) {
+        try {
+            MessageResponse response = new MessageResponse(
+                    message.getId(),
+                    message.getContent(),
+                    message.getPostedAt()
+            );
+            String json = objectMapper.writeValueAsString(response);
+            webSocketHandler.broadcast(json);
+        } catch (Exception e) {
+            System.err.println("WebSocket通知エラー: " + e.getMessage());
+        }
     }
 }
