@@ -1,4 +1,4 @@
-package com.hatoberry.api.chat.domain.message;
+package com.hatoberry.api.message.domain;
 
 import jakarta.persistence.*;
 
@@ -37,5 +37,4 @@ public class Message {
     public Instant getPostedAt() {
         return postedAt;
     }
-
 }

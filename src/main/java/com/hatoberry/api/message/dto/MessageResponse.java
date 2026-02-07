@@ -1,4 +1,4 @@
-package com.hatoberry.api.chat.dto;
+package com.hatoberry.api.message.dto;
 
 import java.time.Instant;
 

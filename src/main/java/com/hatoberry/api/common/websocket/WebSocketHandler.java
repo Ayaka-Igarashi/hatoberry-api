@@ -1,4 +1,4 @@
-package com.hatoberry.api.chat.websocket;
+package com.hatoberry.api.common.websocket;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
@@ -11,7 +11,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Component
-public class ChatWebSocketHandler extends TextWebSocketHandler {
+public class WebSocketHandler extends TextWebSocketHandler {
 
     // 接続中の全セッションを管理
     private final Set<WebSocketSession> sessions = ConcurrentHashMap.newKeySet();

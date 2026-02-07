@@ -1,3 +1,3 @@
-package com.hatoberry.api.chat.dto;
+package com.hatoberry.api.message.dto;
 
 public record MessageRequest(String content) {}
