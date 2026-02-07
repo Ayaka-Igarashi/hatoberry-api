@@ -2,7 +2,6 @@ package com.hatoberry.api.chat.service;
 
 import com.hatoberry.api.chat.domain.message.Message;
 import com.hatoberry.api.chat.domain.message.MessageRepository;
-import com.hatoberry.api.chat.dto.MessageResponse;
 import com.hatoberry.api.chat.event.MessagePostedEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -23,23 +22,12 @@ public class ChatService {
     public void postMessage(String content) {
         Message message = new Message(content);
         Message savedMessage = messageRepository.save(message);
-        
-        MessageResponse response = new MessageResponse(
-                savedMessage.getId(),
-                savedMessage.getContent(),
-                savedMessage.getPostedAt()
-        );
-        eventPublisher.publishEvent(new MessagePostedEvent(response));
+
+        eventPublisher.publishEvent(new MessagePostedEvent(savedMessage));
     }
 
-    public List<MessageResponse> getMessages() {
-        return messageRepository.findAll().stream()
-                .map(message -> new MessageResponse(
-                        message.getId(),
-                        message.getContent(),
-                        message.getPostedAt()
-                ))
-                .toList();
+    public List<Message> getMessages() {
+        return messageRepository.findAll();
     }
 
 }

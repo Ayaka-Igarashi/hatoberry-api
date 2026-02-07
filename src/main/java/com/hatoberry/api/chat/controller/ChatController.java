@@ -1,5 +1,6 @@
-package com.hatoberry.api.chat.api;
+package com.hatoberry.api.chat.controller;
 
+import com.hatoberry.api.chat.domain.message.Message;
 import com.hatoberry.api.chat.dto.MessageRequest;
 import com.hatoberry.api.chat.dto.MessageResponse;
 import com.hatoberry.api.chat.service.ChatService;
@@ -23,6 +24,16 @@ public class ChatController {
 
     @GetMapping("/messages")
     public List<MessageResponse> getMessages() {
-        return this.chatService.getMessages();
+        return this.chatService.getMessages().stream()
+                .map(this::toResponse)
+                .toList();
+    }
+
+    private MessageResponse toResponse(Message message) {
+        return new MessageResponse(
+                message.getId(),
+                message.getContent(),
+                message.getPostedAt()
+        );
     }
 }

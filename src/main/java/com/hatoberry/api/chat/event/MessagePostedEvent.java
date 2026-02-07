@@ -1,5 +1,5 @@
 package com.hatoberry.api.chat.event;
 
-import com.hatoberry.api.chat.dto.MessageResponse;
+import com.hatoberry.api.chat.domain.message.Message;
 
-public record MessagePostedEvent(MessageResponse response) {}
+public record MessagePostedEvent(Message message) {}

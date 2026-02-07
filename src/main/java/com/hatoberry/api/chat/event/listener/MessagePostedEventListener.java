@@ -1,6 +1,7 @@
 package com.hatoberry.api.chat.event.listener;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hatoberry.api.chat.dto.MessageResponse;
 import com.hatoberry.api.chat.event.MessagePostedEvent;
 import com.hatoberry.api.chat.websocket.ChatWebSocketHandler;
 import org.springframework.context.event.EventListener;
@@ -21,7 +22,12 @@ public class MessagePostedEventListener {
     @Async
     public void onMessagePosted(MessagePostedEvent event) {
         try {
-            String json = objectMapper.writeValueAsString(event.response());
+            MessageResponse response = new MessageResponse(
+                    event.message().getId(),
+                    event.message().getContent(),
+                    event.message().getPostedAt()
+            );
+            String json = objectMapper.writeValueAsString(response);
             webSocketHandler.broadcast(json);
         } catch (Exception e) {
             System.err.println("WebSocket通知エラー: " + e.getMessage());
