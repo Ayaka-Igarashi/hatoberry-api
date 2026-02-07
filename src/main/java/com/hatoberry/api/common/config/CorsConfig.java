@@ -1,4 +1,4 @@
-package com.example.hatoberryapi.config;
+package com.hatoberry.api.common.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

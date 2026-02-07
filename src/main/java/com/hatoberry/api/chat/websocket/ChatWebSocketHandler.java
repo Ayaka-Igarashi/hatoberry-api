@@ -1,4 +1,4 @@
-package com.example.hatoberryapi.chat.websocket;
+package com.hatoberry.api.chat.websocket;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;

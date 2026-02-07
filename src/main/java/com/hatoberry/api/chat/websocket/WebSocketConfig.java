@@ -1,4 +1,4 @@
-package com.example.hatoberryapi.chat.websocket;
+package com.hatoberry.api.chat.websocket;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
