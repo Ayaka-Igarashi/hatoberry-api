@@ -18,14 +18,16 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    localRuntimeOnly
+}
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
-    if (project.hasProperty('local')) {
-        runtimeOnly 'com.h2database:h2'
-    }
+    localRuntimeOnly 'com.h2database:h2'
     runtimeOnly 'org.postgresql:postgresql'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -34,4 +36,12 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+tasks.register('bootRunLocal', org.springframework.boot.gradle.tasks.run.BootRun) {
+    group = 'application'
+    description = 'Run with local profile'
+    classpath = sourceSets.main.runtimeClasspath + configurations.localRuntimeOnly
+    mainClass = 'com.hatoberry.api.HatoberryApiApplication'
+    systemProperty 'spring.profiles.active', 'local'
 }
