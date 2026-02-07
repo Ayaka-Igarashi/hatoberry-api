@@ -1,7 +1,8 @@
-package com.hatoberry.api.chat.websocket;
+package com.hatoberry.api.chat.event.listener;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hatoberry.api.chat.event.MessagePostedEvent;
+import com.hatoberry.api.chat.websocket.ChatWebSocketHandler;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;

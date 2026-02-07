@@ -24,7 +24,6 @@ public class ChatService {
         Message message = new Message(content);
         Message savedMessage = messageRepository.save(message);
         
-        // WebSocketで全クライアントに通知
         MessageResponse response = new MessageResponse(
                 savedMessage.getId(),
                 savedMessage.getContent(),
