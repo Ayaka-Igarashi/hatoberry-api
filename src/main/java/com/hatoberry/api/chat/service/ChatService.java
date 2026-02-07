@@ -3,8 +3,8 @@ package com.hatoberry.api.chat.service;
 import com.hatoberry.api.chat.domain.message.Message;
 import com.hatoberry.api.chat.domain.message.MessageRepository;
 import com.hatoberry.api.chat.dto.MessageResponse;
-import com.hatoberry.api.chat.websocket.ChatWebSocketHandler;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.hatoberry.api.chat.event.MessagePostedEvent;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,15 +12,12 @@ import java.util.List;
 @Service
 public class ChatService {
     private final MessageRepository messageRepository;
-    private final ChatWebSocketHandler webSocketHandler;
-    private final ObjectMapper objectMapper;
+    private final ApplicationEventPublisher eventPublisher;
 
     public ChatService(MessageRepository messageRepository, 
-                       ChatWebSocketHandler webSocketHandler,
-                       ObjectMapper objectMapper) {
+                       ApplicationEventPublisher eventPublisher) {
         this.messageRepository = messageRepository;
-        this.webSocketHandler = webSocketHandler;
-        this.objectMapper = objectMapper;
+        this.eventPublisher = eventPublisher;
     }
 
     public void postMessage(String content) {
@@ -28,7 +25,12 @@ public class ChatService {
         Message savedMessage = messageRepository.save(message);
         
         // WebSocketで全クライアントに通知
-        notifyNewMessage(savedMessage);
+        MessageResponse response = new MessageResponse(
+                savedMessage.getId(),
+                savedMessage.getContent(),
+                savedMessage.getPostedAt()
+        );
+        eventPublisher.publishEvent(new MessagePostedEvent(response));
     }
 
     public List<MessageResponse> getMessages() {
@@ -41,17 +43,4 @@ public class ChatService {
                 .toList();
     }
 
-    private void notifyNewMessage(Message message) {
-        try {
-            MessageResponse response = new MessageResponse(
-                    message.getId(),
-                    message.getContent(),
-                    message.getPostedAt()
-            );
-            String json = objectMapper.writeValueAsString(response);
-            webSocketHandler.broadcast(json);
-        } catch (Exception e) {
-            System.err.println("WebSocket通知エラー: " + e.getMessage());
-        }
-    }
 }
